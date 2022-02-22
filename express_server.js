@@ -31,14 +31,7 @@ app.get("/urls", (req, res) => {
 });
 
 app.get("/urls/:shortURL", (req, res) => {
-  const templateVars = { shortURL: req.params.shortURL, longURL: req.params.shortURL };
+  const templateVars = { shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL] };
+  console.log(`req.params.longURL=> `, urlDatabase[req.params.shortURL]);
   res.render("urls_show", templateVars);
 });
-
-// app.get("/set", (req, res) => {// http://localhost:8080/set
-//   const a = 1;
-//   res.send(`a = ${a}`);
-// });
-// app.get("/fetch", (req, res) => {
-//   res.send(`a = ${a}`);
-// });
