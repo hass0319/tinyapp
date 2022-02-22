@@ -48,6 +48,8 @@ app.post("/urls", (req, res) => {
   res.send("Ok");         // Respond with 'Ok' (we will replace this)
 });
 function generateRandomString() {
-  let randomString = Math.random().toString.substring(8);
+  const randomString = Math.random().toString(36).substring(2,9);
   return randomString;
 }
+
+console.log(generateRandomString());
