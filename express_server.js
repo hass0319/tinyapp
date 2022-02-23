@@ -1,8 +1,8 @@
-const express = require('express');
-const bodyParser = require("body-parser");
-const { get } = require('express/lib/response');
-const app = express();
 const PORT = 8080;
+const express = require('express');
+const app = express();
+const bodyParser = require("body-parser");
+
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
@@ -27,7 +27,7 @@ app.get("/", (req, res) => {
 app.get("/urls.json", (req,res) => {// http://localhost:8080/urls.json
   res.json(urlDatabase);
 });
-//adding urls to index page
+//using urls_index page
 app.get("/urls", (req, res) => {
   const templateVars = { urls: urlDatabase };
   res.render("urls_index", templateVars);
@@ -41,10 +41,6 @@ app.get("/urls/:shortURL", (req, res) => {
   const shortURL = req.params.shortURL;
   const longURL = urlDatabase[shortURL];
   const templateVars = { shortURL, longURL};
-  if (!urlDatabase[shortURL]) {
-    res.status(400);
-    res.send("Url is not in database");
-  }
   res.render("urls_show", templateVars);
 });
 //creating shortUrls
@@ -52,10 +48,11 @@ app.post("/urls", (req, res) => {
   const longURL = req.body.longURL;
   const shortURL = generateRandomString();
   urlDatabase[shortURL] = longURL;
-  res.redirect(`/urls`);
+  res.redirect(`/urls/${shortURL}`);
 });
 // redirects the shortURL to longURL
 app.get("/u/:shortURL", (req, res) => {
+  // const shortURL = req.params.shortURL;
   const longURL = urlDatabase[req.params.shortURL];
   res.redirect(longURL);
 });
@@ -65,3 +62,23 @@ app.post("/urls/:shortURL/delete", (req, res) =>{
   delete urlDatabase[shortURL];
   res.redirect(`/urls`);
 });
+//
+app.get("/urls/:shortURL/edit", (req, res) =>{
+  const shortURL = req.params.shortURL;
+  const longURL = urlDatabase[shortURL];
+  const  templateVars = {shortURL, longURL};
+  res.render(`urls_show`, templateVars);
+});
+//edit => new url
+app.post("/urls/:shortURL/;edit/redirect", (req,res) => {
+  const shortURL = req.params.shortURL;
+  const longURL = req.body.longURL;
+  urlDatabase[shortURL] = longURL;
+  res.redirect('/urls');
+});
+
+
+
+// if (!urlDatabase[shortURL]) {
+//   res.status(400);
+//   res.send("Url is not in database");
