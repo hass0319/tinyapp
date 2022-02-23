@@ -71,16 +71,21 @@ app.get("/urls/:shortURL/edit", (req, res) =>{
   const  templateVars = {shortURL, longURL};
   res.render(`urls_show`, templateVars);
 });
-//edit => new url
-app.post("/urls/:shortURL/;edit/redirect", (req,res) => {
+//edit => new url => /edit/redirect
+app.post("/urls/:shortURL", (req,res) => {
   const shortURL = req.params.shortURL;
   const longURL = req.body.longURL;
   urlDatabase[shortURL] = longURL;
   res.redirect('/urls');
 });
-
-
-
-// if (!urlDatabase[shortURL]) {
-//   res.status(400);
-//   res.send("Url is not in database");
+//
+app.post("/login", (req,res) => {
+  const username = req.body.username;
+  console.log(username);
+  res.cookie("username", username);
+});
+//
+app.post("/login", (req,res) => {
+  const templateVars = { username: req.cookies["username"] };
+  res.render("urls_index", templateVars);
+});
