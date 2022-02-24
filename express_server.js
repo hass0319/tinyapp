@@ -76,6 +76,13 @@ app.post("/urls/:shortURL", (req,res) => {
   urlDatabase[shortURL] = longURL;
   res.redirect('/urls');
 });
+app.get("/register", (req,res) => {
+  const user = req.session['user_id'];
+  if (!user) {
+    return res.render(`urls_register`);
+  }
+  return res.redirect('/urls');
+});
   
 //
 app.post("/logout", (req, res) => {
