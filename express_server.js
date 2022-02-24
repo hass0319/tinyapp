@@ -101,6 +101,25 @@ app.post("/register", (req, res) => {
     return res.sendStatus(400);
   }
 });
+app.post("/login", (req,res) => {
+  const email = req.body.email;
+  const password = req.body.password;
+  const user = getUser(email, password);
+  if (user) {
+    req.session['user_id'] = user.id;
+    return res.redirect('/urls');
+  } else {
+    return res.sendStatus(403);
+  }
+});
+
+app.get("/login", (req,res) => {
+  const user = req.session['user_id'];
+  if (!user) {
+    return res.render(`urls_login`);
+  }
+  return res.redirect('/urls');
+});
   
 //
 app.post("/logout", (req, res) => {
