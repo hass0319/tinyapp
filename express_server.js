@@ -83,6 +83,24 @@ app.get("/register", (req,res) => {
   }
   return res.redirect('/urls');
 });
+
+app.post("/register", (req, res) => {
+  if (req.body["email"] === '' || req.body["password"] === '') {
+    res.status(400);
+    return res.send("Email or password field is blank");
+  }
+  const email =  req.body["email"];
+  const password = req.body["password"];
+  const user = getUserByEmail(email);
+  if (!user) {
+    const userRandomId = generateRandomString();
+    insertUser(userRandomId, email, password);
+    req.session["user_id"] = userRandomId;
+    return res.redirect("/urls");
+  } else {
+    return res.sendStatus(400);
+  }
+});
   
 //
 app.post("/logout", (req, res) => {
