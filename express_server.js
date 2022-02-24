@@ -3,10 +3,10 @@ const express = require('express');
 const app = express();
 const bodyParser = require("body-parser");
 const cookieSession = require('cookie-session');
-const {getUser, getUserByEmail, insertUser, generateRandomString} = require('./helpers');
+const { getUser, getUserByEmail, insertUser, generateRandomString } = require('./helpers');
 
 // Middleware
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 app.use(cookieSession({
   name: 'session',
@@ -22,27 +22,33 @@ const urlDatabase = {
 app.get("/", (req, res) => {
   res.send("Hello!");
 });
-//
-app.get("/urls.json", (req,res) => {// http://localhost:8080/urls.json
+
+app.get("/urls.json", (req, res) => {// http://localhost:8080/urls.json
   res.json(urlDatabase);
 });
+
 //using urls_index page
 app.get("/urls", (req, res) => {
-  const templateVars = { urls: urlDatabase,
-    user: req.session['user_id'] };
+  const templateVars = {
+    urls: urlDatabase,
+    user: req.session['user_id']
+  };
   res.render("urls_index", templateVars);
 });
+
 //adds new urls
 app.get("/urls/new", (req, res) => {
   res.render("urls_new");
 });
+
 //assigning  shorturls to longurls
 app.get("/urls/:shortURL", (req, res) => {
   const shortURL = req.params.shortURL;
   const longURL = urlDatabase[shortURL];
-  const templateVars = { shortURL, longURL, user: req.session['user_id']};
+  const templateVars = { shortURL, longURL, user: req.session['user_id'] };
   res.render("urls_show", templateVars);
 });
+
 //creating shortUrls
 app.post("/urls", (req, res) => {
   const longURL = req.body.longURL;
@@ -50,33 +56,46 @@ app.post("/urls", (req, res) => {
   urlDatabase[shortURL] = longURL;
   res.redirect(`/urls/${shortURL}`);
 });
+
 // redirects the shortURL to longURL
 app.get("/u/:shortURL", (req, res) => {
   const shortURL = req.params.shortURL;
   const longURL = urlDatabase[shortURL];
   res.redirect(longURL);
 });
+
 // delets urls
-app.post("/urls/:shortURL/delete", (req, res) =>{
+app.post("/urls/:shortURL/delete", (req, res) => {
   const shortURL = req.params.shortURL;
   delete urlDatabase[shortURL];
   res.redirect(`/urls`);
 });
+
 //
-app.get("/urls/:shortURL/edit", (req, res) =>{
+app.get("/urls/:shortURL/edit", (req, res) => {
   const shortURL = req.params.shortURL;
   const longURL = urlDatabase[shortURL];
-  const  templateVars = {shortURL, longURL, user: req.session['user_id']};
+  const templateVars = { shortURL, longURL, user: req.session['user_id'] };
   res.render(`urls_show`, templateVars);
 });
+
 //edit => new url => /edit/redirect
-app.post("/urls/:shortURL", (req,res) => {
+app.post("/urls/:shortURL", (req, res) => {
   const shortURL = req.params.shortURL;
   const longURL = req.body.longURL;
   urlDatabase[shortURL] = longURL;
   res.redirect('/urls');
 });
-app.get("/register", (req,res) => {
+
+app.get("/login", (req, res) => {
+  const user = req.session['user_id'];
+  if (!user) {
+    return res.render(`urls_login`);
+  }
+  return res.redirect('/urls');
+});
+
+app.get("/register", (req, res) => {
   const user = req.session['user_id'];
   if (!user) {
     return res.render(`urls_register`);
@@ -84,24 +103,7 @@ app.get("/register", (req,res) => {
   return res.redirect('/urls');
 });
 
-app.post("/register", (req, res) => {
-  if (req.body["email"] === '' || req.body["password"] === '') {
-    res.status(400);
-    return res.send("Email or password field is blank");
-  }
-  const email =  req.body["email"];
-  const password = req.body["password"];
-  const user = getUserByEmail(email);
-  if (!user) {
-    const userRandomId = generateRandomString();
-    insertUser(userRandomId, email, password);
-    req.session["user_id"] = userRandomId;
-    return res.redirect("/urls");
-  } else {
-    return res.sendStatus(400);
-  }
-});
-app.post("/login", (req,res) => {
+app.post("/login", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
   const user = getUser(email, password);
@@ -113,20 +115,30 @@ app.post("/login", (req,res) => {
   }
 });
 
-app.get("/login", (req,res) => {
-  const user = req.session['user_id'];
-  if (!user) {
-    return res.render(`urls_login`);
+app.post("/register", (req, res) => {
+  if (req.body["email"] === '' || req.body["password"] === '') {
+    res.status(400);
+    return res.send("Email or password field is blank");
   }
-  return res.redirect('/urls');
+  const email = req.body["email"];
+  const password = req.body["password"];
+  const user = getUserByEmail(email);
+  if (!user) {
+    const userRandomId = generateRandomString();
+    insertUser(userRandomId, email, password);
+    req.session["user_id"] = userRandomId;
+    return res.redirect("/urls");
+  } else {
+    return res.sendStatus(400);
+  }
 });
-  
+
 //
 app.post("/logout", (req, res) => {
   req.session = null;
   res.redirect("/urls");
 });
-  
-app.listen(PORT, ()=> {
+
+app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
 });
