@@ -10,7 +10,7 @@ app.use(cookieParser());
 app.set("view engine", "ejs");
 
 const urlDatabase = {
-  // "b2xVn2": "http://www.lighthouselabs.ca",
+  "b2xVn2": "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com",
   "esdrft": "http://www.yahoo.com"
 };
@@ -70,7 +70,7 @@ app.post("/urls/:shortURL/delete", (req, res) =>{
 app.get("/urls/:shortURL/edit", (req, res) =>{
   const shortURL = req.params.shortURL;
   const longURL = urlDatabase[shortURL];
-  const  templateVars = {shortURL, longURL, username: req.cookies.username};
+  const  templateVars = {shortURL, longURL, username: req.cookies};
   res.render(`urls_show`, templateVars);
 });
 //edit => new url => /edit/redirect
@@ -88,16 +88,8 @@ app.post("/login", (req,res) => {
   res.redirect('/urls');
 });
 //
-// app.post("/login", (req,res) => {
-//   const templateVars = { username: req.cookies["username"] };
-//   // if (templateVars) (
-
-//   // )
-//   res.render("urls_index", templateVars);
-// });
-
-// app.post("/logout", (req, res) => {
-//   req.clearcookie("username");
-//   res.redirect("/urls");
-// });
+app.post("/logout", (req, res) => {
+  res.clearCookie("username");
+  res.redirect("/urls");
+});
 
