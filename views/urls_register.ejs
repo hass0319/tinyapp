@@ -10,8 +10,8 @@
 
 <body>
   <%- include('partials/_header') %>
-    <form method="POST" action="/register">
-      <h2>Create Account</h2>
+    <form method="POST" action="/register" style="margin-left: 1em">
+      <h2 style="margin-left: .5em; margin-top: .5em">Create Account</h2>
       <div class="form-group col-sm-3">
         <label for="emailInput">Email address</label>
         <input type="email" class="form-control" name="email" aria-describedby="emailHelp" placeholder="Email"></input>
@@ -19,7 +19,7 @@
       <div class="form-group col-sm-3">
         <label for="passwordInput">Password</label>
         <input type="password" name="password" class="form-control" placeholder="Password"></input>
-        <button class="btn btn-success" type="submit">Register</button>
+        <button class="btn btn-success" type="submit" style="margin-top: 1em">Register</button>
       </div>
     </form>
 

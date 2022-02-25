@@ -11,8 +11,8 @@
 <body>
   <%- include('partials/_header') %>
   
-    <form method="POST" action="/login">
-      <h1>Login</h1>
+    <form method="POST" action="/login" style="margin-left: 1em">
+      <h1 style="margin-left: .4em; margin-top: .5em">Login</h1>
       <div class="form-group col-sm-3">
         <label for="emailInput">Email address</label>
         <input type="email" class="form-control" name="email" aria-describedby="emailHelp" placeholder="Email"></input>
@@ -21,7 +21,7 @@
       <div class="form-group col-sm-3">
         <label for="passwordInput">Password</label>
         <input type="password" name="password" class="form-control" placeholder="Password"></input>
-        <button class="btn btn-success" type="submit">Login</button>
+        <button class="btn btn-success" type="submit" style="margin-top: 1em">Login</button>
       </div>
     </form>
   
