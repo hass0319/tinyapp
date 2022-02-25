@@ -38,7 +38,8 @@ app.get("/urls", (req, res) => {
 
 //adds new urls
 app.get("/urls/new", (req, res) => {
-  res.render("urls_new");
+  const templateVars = { user: req.session['user_id'] };
+  res.render("urls_new", templateVars);
 });
 
 //assigning  shorturls to longurls
@@ -89,24 +90,27 @@ app.post("/urls/:shortURL", (req, res) => {
 
 app.get("/login", (req, res) => {
   const user = req.session['user_id'];
+  const templateVars = {user};
   if (!user) {
-    return res.render(`urls_login`);
+    return res.render(`urls_login`, templateVars);
   }
   return res.redirect('/urls');
 });
 
 app.get("/register", (req, res) => {
   const user = req.session['user_id'];
+  const templateVars = {user};
   if (!user) {
-    return res.render(`urls_register`);
+    return res.render(`urls_register`, templateVars);
   }
   return res.redirect('/urls');
 });
-
+// ${}
 app.post("/login", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
   const user = getUser(email, password);
+  // console.log(`user=> ${user}, email=> ${email}, password =>${password}`);
   if (user) {
     req.session['user_id'] = user.id;
     return res.redirect('/urls');
