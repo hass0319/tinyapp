@@ -11,6 +11,21 @@ const users = {
   }
 };
 
+// const getUserByEmail = function(email, database) {
+  
+//   for (const key in users) {
+//     const userEmail = users[key]['email'];
+//     const userPass = users[key]['password'];
+//     if (userEmail === email) {
+//       return users[key];
+//     }
+//     if(userPass === password){
+//       return false
+//   }
+//   return false;
+// }
+//   return user;
+// };
 function generateRandomString() {
   const randomString = Math.random().toString(36).substring(2,9);
   return randomString;
@@ -26,7 +41,6 @@ function getUser(email, password) {
   }
   return false;
 }
-
 function getUserByEmail(email) {
   for (const key in users) {
     const userEmail = users[key]['email'];
@@ -45,6 +59,32 @@ function insertUser(userRandomId, email, password) {
   };
 }
 
+function UrlsForUser(urlDatabase, userId) {
+  let userUrls = {};
+  for (let url in urlDatabase) {
+    if (urlDatabase[url].userID === userId) {
+      userUrls[url] = urlDatabase[url];
+    }
+  }
+  return userUrls;
+}
 
 
-module.exports = {getUser, getUserByEmail, insertUser, generateRandomString};
+
+// function urlDatabase(urlDatabase) {
+//   let newDatabase = {};
+//   for (let key in urlDatabase) {
+//     const shortURL = urlDatabase[key];
+//     const longURL = urlDatabase[key].longURL;
+//     const userID = urlDatabase[key].userID;
+//     newDatabase = {
+//       shortURL,
+//       longURL,
+//       userID
+//     };
+//   }
+//   return newDatabase;
+// }
+
+
+module.exports = {getUser, getUserByEmail, insertUser, generateRandomString, UrlsForUser};
