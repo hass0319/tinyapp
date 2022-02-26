@@ -3,7 +3,8 @@ const express = require('express');
 const app = express();
 const bodyParser = require("body-parser");
 const cookieSession = require('cookie-session');
-const { getUser, getUserByEmail, insertUser, generateRandomString, UrlsForUser} = require('./helpers');
+const bcrypt = require('bcryptjs');
+const { users, getUser, getUserByEmail, insertUser, generateRandomString, UrlsForUser} = require('./helpers');
 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -24,6 +25,7 @@ const urlDatabase = {
   }
 };
 
+
 app.get("/", (req, res) => {
   const user = req.session["user_id"];
   if (!user) {
@@ -34,12 +36,13 @@ app.get("/", (req, res) => {
 
 //using urls_index page
 app.get("/urls", (req, res) => {
-  const user = req.session['user_id'];
-  if (!user) {
-    res.status(400);
-    res.send('Login to view urls');
+  const userId = req.session['user_id'];
+  if (!userId) {
+    return res.status(400).send('Login to view urls');
   }
-  let userUrls = UrlsForUser(urlDatabase, user);
+  const user = users[userId];
+  let userUrls = UrlsForUser(urlDatabase, userId);
+  console.log(userUrls);
   const templateVars = { urls: userUrls, user };
   res.render("urls_index", templateVars);
 });
@@ -51,7 +54,7 @@ app.get("/urls/new", (req, res) => {
     res.send('Login to view urls');
     return res.redirect('/login');
   }
-  const templateVars = { user };//, userID
+  const templateVars = { user };
   res.render("urls_new", templateVars);
 });
 
@@ -132,37 +135,39 @@ app.get("/register", (req, res) => {
   return res.redirect('/urls');
 });
 
+// console.log(`user=> ${user}, email=> ${email}, password =>${password}`);
 app.post("/login", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
-  const user = getUser(email, password);
-  // console.log(`user=> ${user}, email=> ${email}, password =>${password}`);
-  if (user) {
-    req.session['user_id'] = user.id;
-    return res.redirect('/urls');
-  } else {
-    res.status(403);
-    return res.send('Error: Email or Password does not match');
+  const user = getUserByEmail(email);
+  
+  if (!user) {
+    return res.status(403).send('Error: Email or Password does not match');
   }
+  const result = bcrypt.compareSync(password, user.password);
+  if (!result) {
+    return res.send(`Error: password don't match`);
+  }
+  req.session['user_id'] = user.id;
+  return res.redirect('/urls');
 });
 
 app.post("/register", (req, res) => {
   if (req.body["email"] === '' || req.body["password"] === '') {
-    res.status(400);
-    return res.send("Email or password field is blank");
+    return res.status(400).send("Email or password field is blank");
   }
   const email = req.body["email"];
   const password = req.body["password"];
   const user = getUserByEmail(email);
+  const salt = bcrypt.genSaltSync();
+  const hashedPassword = bcrypt.hashSync(password, salt);
   if (!user) {
     const userRandomId = generateRandomString();
-    insertUser(userRandomId, email, password);
+    insertUser(userRandomId, email, hashedPassword);
     req.session["user_id"] = userRandomId;
     return res.redirect("/urls");
-  } else {
-    res.status(400);
-    return res.send('Error: Email exits');
   }
+  return res.status(400).send('Error: Email exits');
 });
 
 //logs out and clears cookies
