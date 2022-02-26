@@ -1,4 +1,15 @@
 
+const urlDatabase = {
+  b6UTxQ: {
+    longURL: "https://www.tsn.ca",
+    userID: "aJ48lW"
+  },
+  i3BoGr: {
+    longURL: "https://www.google.ca",
+    userID: "aJ48lW"
+  }
+};
+
 const users = {
   "userRandomID": {
     id: "userRandomID",
@@ -11,36 +22,9 @@ const users = {
     password: "$2a$10$XHBDkt1sGDey8MdxgsSEE.nsNMUBE/VnnqicRY3XeockrrKi6DJSO"
   }
 };
-
-// const getUserByEmail = function(email, database) {
-  
-//   for (const key in users) {
-//     const userEmail = users[key]['email'];
-//     const userPass = users[key]['password'];
-//     if (userEmail === email) {
-//       return users[key];
-//     }
-//     if(userPass === password){
-//       return false
-//   }
-//   return false;
-// }
-//   return user;
-// };
 function generateRandomString() {
   const randomString = Math.random().toString(36).substring(2,9);
   return randomString;
-}
-
-function getUser(email, password) {
-  for (const key in users) {
-    const userEmail = users[key]['email'];
-    const userPass = users[key]['password'];
-    if (userEmail === email && userPass === password) {
-      return users[key];
-    }
-  }
-  return false;
 }
 function getUserByEmail(email) {
   for (const key in users) {
@@ -51,7 +35,6 @@ function getUserByEmail(email) {
   }
   return null;
 }
-
 function insertUser(userRandomId, email, password) {
   users[userRandomId] = {
     id: userRandomId,
@@ -59,7 +42,6 @@ function insertUser(userRandomId, email, password) {
     password
   };
 }
-
 function UrlsForUser(urlDatabase, userId) {
   let userUrls = {};
   for (let url in urlDatabase) {
@@ -69,23 +51,14 @@ function UrlsForUser(urlDatabase, userId) {
   }
   return userUrls;
 }
-
-
-
-// function urlDatabase(urlDatabase) {
-//   let newDatabase = {};
-//   for (let key in urlDatabase) {
-//     const shortURL = urlDatabase[key];
-//     const longURL = urlDatabase[key].longURL;
-//     const userID = urlDatabase[key].userID;
-//     newDatabase = {
-//       shortURL,
-//       longURL,
-//       userID
-//     };
+// function getUser(email, password) {
+//   for (const key in users) {
+//     const userEmail = users[key]['email'];
+//     const userPass = users[key]['password'];
+//     if (userEmail === email && userPass === password) {
+//       return users[key];
+//     }
 //   }
-//   return newDatabase;
+//   return false;
 // }
-
-
-module.exports = {users, getUser, getUserByEmail, insertUser, generateRandomString, UrlsForUser};
+module.exports = {users, urlDatabase, getUserByEmail, insertUser, generateRandomString, UrlsForUser};

@@ -4,7 +4,7 @@ const app = express();
 const bodyParser = require("body-parser");
 const cookieSession = require('cookie-session');
 const bcrypt = require('bcryptjs');
-const { users, getUser, getUserByEmail, insertUser, generateRandomString, UrlsForUser} = require('./helpers');
+const { users, urlDatabase, getUserByEmail, insertUser, generateRandomString, UrlsForUser} = require('./helpers');
 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -13,18 +13,6 @@ app.use(cookieSession({
   name: 'session',
   keys: ["secret", "cookie"]
 }));
-
-const urlDatabase = {
-  b6UTxQ: {
-    longURL: "https://www.tsn.ca",
-    userID: "aJ48lW"
-  },
-  i3BoGr: {
-    longURL: "https://www.google.ca",
-    userID: "aJ48lW"
-  }
-};
-
 
 app.get("/", (req, res) => {
   const user = req.session["user_id"];
@@ -64,11 +52,7 @@ app.get("/urls/:shortURL", (req, res) => {
   const longURL = urlDatabase[shortURL].longURL;
   const templateVars = { shortURL, longURL, user: req.session['user_id'] };
   res.render("urls_show", templateVars);
-  // url of id does not exist return error
-  // if(!user) return errort
-  // if(user), but url ! owned by id breturn error
 });
-
 //creating shortUrls
 app.post("/urls", (req, res) => {
   const longURL = req.body.longURL;
@@ -78,8 +62,6 @@ app.post("/urls", (req, res) => {
     userID: req.session["user_id"]
   };
   res.redirect(`/urls/${shortURL}`);
-  // if url of is exists, redirects to longurl
-  //if !url error
 });
 
 // redirects the shortURL to longURL
@@ -88,7 +70,6 @@ app.get("/u/:shortURL", (req, res) => {
   const longURL = urlDatabase[shortURL].longURL;
   res.redirect(longURL);
 });
-
 
 //
 app.get("/urls/:shortURL/edit", (req, res) => {
