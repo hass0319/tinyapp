@@ -26,14 +26,14 @@ function generateRandomString() {
   const randomString = Math.random().toString(36).substring(2,9);
   return randomString;
 }
-function getUserByEmail(email) {
+function getUserByEmail(email, urlDatabase) {
   for (const key in users) {
     const userEmail = users[key]['email'];
     if (userEmail === email) {
       return users[key];
     }
   }
-  return null;
+  return undefined;
 }
 function insertUser(userRandomId, email, password) {
   users[userRandomId] = {
@@ -51,14 +51,5 @@ function UrlsForUser(urlDatabase, userId) {
   }
   return userUrls;
 }
-// function getUser(email, password) {
-//   for (const key in users) {
-//     const userEmail = users[key]['email'];
-//     const userPass = users[key]['password'];
-//     if (userEmail === email && userPass === password) {
-//       return users[key];
-//     }
-//   }
-//   return false;
-// }
+
 module.exports = {users, urlDatabase, getUserByEmail, insertUser, generateRandomString, UrlsForUser};

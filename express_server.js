@@ -17,7 +17,7 @@ app.use(cookieSession({
 app.get("/", (req, res) => {
   const user = req.session["user_id"];
   if (!user) {
-    res.redirect('/login');
+    return res.redirect('/login');
   }
   res.redirect('/urls');
 });
@@ -30,7 +30,6 @@ app.get("/urls", (req, res) => {
   }
   const user = users[userId];
   let userUrls = UrlsForUser(urlDatabase, userId);
-  console.log(userUrls);
   const templateVars = { urls: userUrls, user };
   res.render("urls_index", templateVars);
 });
@@ -120,7 +119,7 @@ app.get("/register", (req, res) => {
 app.post("/login", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
-  const user = getUserByEmail(email);
+  const user = getUserByEmail(email,  urlDatabase);
   
   if (!user) {
     return res.status(403).send('Error: Email or Password does not match');
@@ -139,7 +138,7 @@ app.post("/register", (req, res) => {
   }
   const email = req.body["email"];
   const password = req.body["password"];
-  const user = getUserByEmail(email);
+  const user = getUserByEmail(email,  urlDatabase);
   const salt = bcrypt.genSaltSync();
   const hashedPassword = bcrypt.hashSync(password, salt);
   if (!user) {
