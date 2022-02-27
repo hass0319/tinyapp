@@ -5,18 +5,22 @@ TinyApp is a full stack web application built with Node and Express using RESt c
 ## Final Product
 
 !["/register"](#)
+!["https://github.com/hass0319/tinyapp/blob/master/docs/Registration.png"](#)
 
 !["new user login"](#)
+!["https://github.com/hass0319/tinyapp/blob/master/docs/newUserLogin.png"](#)
 
 !["/ or /login"](#)
-
-!["logged in"](#)
+!["https://github.com/hass0319/tinyapp/blob/master/docs/login.png"](#)
 
 !["Create new Url =>1"](#)
+!["https://github.com/hass0319/tinyapp/blob/master/docs/CreateNewUrl1.png"](#)
 
 ![" =>2 or Edit"](#)
+!["https://github.com/hass0319/tinyapp/blob/master/docs/CreateNewUrl2.png"](#)
 
-!["urls"](#)
+![";userUrls"](#)
+!["https://github.com/hass0319/tinyapp/blob/master/docs/UserUrls.png"](#)
 
 ## Dependencies
 
