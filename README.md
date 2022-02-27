@@ -5,27 +5,22 @@ TinyApp is a full stack web application built with Node and Express using RESt c
 ## Final Product
 
   **Register**
-!["Register"](#)
-(https://github.com/hass0319/tinyapp/blob/master/docs/Registration.png)
+!["Register"](https://github.com/hass0319/tinyapp/blob/master/docs/Registration.png)
 
   **new user login**
-!["new user login"]
-(https://github.com/hass0319/tinyapp/blob/master/docs/newUserLogin.png)
+!["new user login"](https://github.com/hass0319/tinyapp/blob/master/docs/newUserLogin.png)
 
   **/ or /login**
 !["/ or /login"](https://github.com/hass0319/tinyapp/blob/master/docs/login.png)
 
   **Create new Url =>1**
-!["Create new Url =>1"](#)
-(https://github.com/hass0319/tinyapp/blob/master/docs/CreateNewUrl1.png)
+!["Create new Url =>1"](https://github.com/hass0319/tinyapp/blob/master/docs/CreateNewUrl1.png)
 
   **=>2 or Edit**
-![" =>2 or Edit"](#)
-(https://github.com/hass0319/tinyapp/blob/master/docs/CreateNewUrl2.png)
+![" =>2 or Edit"](https://github.com/hass0319/tinyapp/blob/master/docs/CreateNewUrl2.png)
 
   **userUrls**
-!["userUrls"](#)
-(https://github.com/hass0319/tinyapp/blob/master/docs/UserUrls.png)
+!["userUrls"](https://github.com/hass0319/tinyapp/blob/master/docs/UserUrls.png)
 
 ## Dependencies
 
