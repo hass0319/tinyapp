@@ -21,12 +21,12 @@
       </div>
 
       <div class="card-footer" >
-        <h3 class="text-secondary"><center>Edit</center></h3>
+        <h3 class="text-secondary" style="border-radius: 1rem"><center>Edit</center></h3>
       <form class="form-inline" action="/urls/<%= shortURL %>" method="POST">
         <div class="form-group mb-2" style="margin:auto">
-          <label for="longURL">Enter a URL:</label>
-          <input class="form-control" type="text" name="longURL" value="<%= longURL %>" placeholder="http://" style="width: 300px; margin: 1em"></input>
-          <button type="Submit" value="Submit" class="btn btn-primary">Submit</button>
+          <label for="longURL" >Enter a URL:</label>
+          <input class="form-control" type="text" name="longURL" value="<%= longURL %>" placeholder="http://" style="width: 300px; margin: 1em; border-radius: .5rem"></input>
+          <button type="Submit" value="Submit" class="btn btn-primary" style="border-radius: .5rem">Submit</button>
         </div>
         </div>
       </form>

@@ -1,37 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>New URL - TinyApp Example</title>
-  </head>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+    integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
 
-  <body>
-    <%- include('partials/_header') %>
-    <div class="container" style="margin:0 auto; margin-top: 5rem"></div>
-    <main>
-      <div class="col-sm-10 col-lg-5 mx-auto">
-        <div class="card my-5" style="border-radius: 2rem; box-shadow: 0 0.5rem 1rem 0 rgba(90, 194, 107, 0.445);">
-      <h3 style=" margin-top: .5em"><center>Create TinyURL</center></h3>
+  <title>New URL - TinyApp Example</title>
+</head>
 
-      <form class="form-inline" action="/urls" method="POST">
-        <div class="form-group mb-2" >
+<body>
+  <%- include('partials/_header') %>
+    <div class="container" style="margin:0 auto; margin-top: 5rem">
+      <main>
+        <form class="form-inline" action="/urls" method="POST">
+        <div class="col-sm-10 col-lg-5 mx-auto">
+          <div class="card my-10" style="border-radius: 2rem; box-shadow: 0 0.5rem 1rem 0 rgba(90, 194, 107, 0.445);">
+            <h3 style=" margin-top: .5em">
+              <center>Create TinyURL</center>
+            </h3>
+              <div class="form-label-group mb-2">
+                <label class="form-inline" style="margin-left: 1rem " for="longURL"></label>
+                <input name="longURL" class="form-control" type="text" placeholder="Enter a URL: http://"
+                  style="width: 300px; margin: 1em; border-radius: .5rem;"></input>
+                <!-- button -->
+                <button type="submit" value="submit" class="btn btn-primary"
+                  style="border-radius: .5rem">Submit</button>
+              </div>
+            </form>
+      </main>
+    </div>
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"></script>
+</body>
 
-          <label style="margin-left: 7em; " for="longURL">Enter a URL:</label>
-          <center>
-          <input name="longURL" class="form-control" type="text" placeholder="http://" style="width: 300px; margin: 1em; border-radius: 2rem;">
-          <!-- button -->
-          <button type="submit" value="submit" class="btn btn-primary">Submit</button> </center>
-        </div>
-      </form>
-    </main>
-      <!-- Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-  </body>
 </html>
