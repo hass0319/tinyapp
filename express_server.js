@@ -36,8 +36,9 @@ app.get("/urls", (req, res) => {
 
 //adds new urls
 app.get("/urls/new", (req, res) => {
-  const user = req.session['user_id'];
-  if (!user) {
+  const userId = req.session['user_id'];
+  const user = users[userId];
+  if (!userId) {
     res.send('Login to view urls');
     return res.redirect('/login');
   }
@@ -47,9 +48,11 @@ app.get("/urls/new", (req, res) => {
 
 //assigning  shorturls to longurls
 app.get("/urls/:shortURL", (req, res) => {
+  const userId = req.session['user_id'];
+  const user = users[userId];
   const shortURL = req.params.shortURL;
   const longURL = urlDatabase[shortURL].longURL;
-  const templateVars = { shortURL, longURL, user: req.session['user_id'] };
+  const templateVars = { shortURL, longURL, user };
   res.render("urls_show", templateVars);
 });
 //creating shortUrls
@@ -72,9 +75,11 @@ app.get("/u/:shortURL", (req, res) => {
 
 //
 app.get("/urls/:shortURL/edit", (req, res) => {
+  const userId = req.session['user_id'];
+  const user = users[userId];
   const shortURL = req.params.shortURL;
   const longURL = urlDatabase[shortURL].longURL;
-  const templateVars = { shortURL, longURL, user: req.session['user_id'] };
+  const templateVars = { shortURL, longURL, user };
   res.render(`urls_show`, templateVars);
 });
 
