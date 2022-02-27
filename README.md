@@ -9,12 +9,11 @@ TinyApp is a full stack web application built with Node and Express using RESt c
 (https://github.com/hass0319/tinyapp/blob/master/docs/Registration.png)
 
   **new user login**
-!["new user login"](#)
+!["new user login"]
 (https://github.com/hass0319/tinyapp/blob/master/docs/newUserLogin.png)
 
   **/ or /login**
-!["/ or /login"](#)
-(https://github.com/hass0319/tinyapp/blob/master/docs/login.png)
+!["/ or /login"](https://github.com/hass0319/tinyapp/blob/master/docs/login.png)
 
   **Create new Url =>1**
 !["Create new Url =>1"](#)
