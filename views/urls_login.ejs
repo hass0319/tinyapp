@@ -2,6 +2,12 @@
 <html lang="en">
 
 <head>
+
+  <meta charset="utf-8">
+  <meta>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
+  <meta>
+
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
     integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
@@ -10,21 +16,36 @@
 
 <body>
   <%- include('partials/_header') %>
-  
-    <form method="POST" action="/login" style="margin-left: 1em">
-      <h1 style="margin-left: .4em; margin-top: .5em">Login</h1>
-      <div class="form-group col-sm-3">
-        <label for="emailInput">Email address</label>
-        <input type="email" class="form-control" name="email" aria-describedby="emailHelp" placeholder="Email"></input>
-        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-      </div>
-      <div class="form-group col-sm-3">
-        <label for="passwordInput">Password</label>
-        <input type="password" name="password" class="form-control" placeholder="Password"></input>
-        <button class="btn btn-success" type="submit" style="margin-top: 1em">Login</button>
-      </div>
-    </form>
-  
+
+    <div class="container" style="margin:0 auto; margin-top: 5rem">
+
+      <form class="form-signin" method="POST" action="/login">
+        <!-- login -->
+        <div class="col-sm-10 col-lg-5 mx-auto">
+          <div class="card my-5" style="border-radius: 2rem; box-shadow: 0 0.5rem 1rem 0 rgba(90, 194, 107, 0.445);">
+            <h2 style=" margin-top: .5em">
+              <center>Login</center>
+            </h2>
+            <!-- email address -->
+            <div class="form-label-group" style="margin: .5rem">
+              <input name="email" type="email" class="form-control" aria-describedby="emailHelp"
+                placeholder="Email Address"></input>
+            </div>
+            <!-- password -->
+            <div class="form-label-group" style="margin: .5rem">
+              <input type="password" name="password" class="form-control" placeholder="Password"></input>
+              <!-- login button -->
+              <center>
+                <button class="btn btn-success" type="submit" style="margin-top: 1em">Login</button>
+              </center>
+            </div>
+          </div>
+        </div>
+      </form>
+
+    </div>
+
+
 
     <!-- Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"

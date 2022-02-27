@@ -90,11 +90,6 @@ app.post("/urls/:shortURL/delete", (req, res) => {
   const shortURL = req.params.shortURL;
   delete urlDatabase[shortURL];
   res.redirect(`/urls`);
-  // if (user)&& owns url
-  // deletes urlDatabase, redirects /urls
-  // if (!own url) return url not in database
-  // if (!user)
-  // returns login to delete
 });
 
 app.get("/login", (req, res) => {
@@ -115,7 +110,7 @@ app.get("/register", (req, res) => {
   return res.redirect('/urls');
 });
 
-// console.log(`user=> ${user}, email=> ${email}, password =>${password}`);
+
 app.post("/login", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
@@ -132,6 +127,7 @@ app.post("/login", (req, res) => {
   return res.redirect('/urls');
 });
 
+// adds a new user, hashes password,
 app.post("/register", (req, res) => {
   if (req.body["email"] === '' || req.body["password"] === '') {
     return res.status(400).send("Email or password field is blank");
@@ -159,7 +155,7 @@ app.post("/logout", (req, res) => {
 app.get("/urls.json", (req, res) => {// http://localhost:8080/urls.json
   res.json(urlDatabase);
 });
-
+// to test server if running
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
 });

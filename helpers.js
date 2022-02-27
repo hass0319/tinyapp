@@ -26,6 +26,7 @@ function generateRandomString() {
   const randomString = Math.random().toString(36).substring(2,9);
   return randomString;
 }
+// eslint-disable-next-line no-unused-vars
 function getUserByEmail(email, urlDatabase) {
   for (const key in users) {
     const userEmail = users[key]['email'];
