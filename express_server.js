@@ -4,7 +4,8 @@ const app = express();
 const bodyParser = require("body-parser");
 const cookieSession = require('cookie-session');
 const bcrypt = require('bcryptjs');
-const { users, urlDatabase, getUserByEmail, insertUser, generateRandomString, UrlsForUser} = require('./helpers');
+const { getUserByEmail, insertUser, generateRandomString, UrlsForUser} = require('./helpers');
+const { users, urlDatabase } = require('./database');
 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -19,19 +20,20 @@ app.get("/", (req, res) => {
   if (!user) {
     return res.redirect('/login');
   }
-  res.redirect('/urls');
+  return res.redirect('/urls');
 });
 
 //using urls_index page
 app.get("/urls", (req, res) => {
   const userId = req.session['user_id'];
   if (!userId) {
-    return res.status(400).send('Login to view urls');
+    // res.status(400).send('Login to view urls');
+    return res.redirect('/login');
   }
   const user = users[userId];
   let userUrls = UrlsForUser(urlDatabase, userId);
   const templateVars = { urls: userUrls, user };
-  res.render("urls_index", templateVars);
+  return res.render("urls_index", templateVars);
 });
 
 //adds new urls
@@ -43,7 +45,7 @@ app.get("/urls/new", (req, res) => {
     return res.redirect('/login');
   }
   const templateVars = { user };
-  res.render("urls_new", templateVars);
+  return res.render("urls_new", templateVars);
 });
 
 //assigning  shorturls to longurls
@@ -53,7 +55,7 @@ app.get("/urls/:shortURL", (req, res) => {
   const shortURL = req.params.shortURL;
   const longURL = urlDatabase[shortURL].longURL;
   const templateVars = { shortURL, longURL, user };
-  res.render("urls_show", templateVars);
+  return res.render("urls_show", templateVars);
 });
 //creating shortUrls
 app.post("/urls", (req, res) => {
@@ -63,14 +65,14 @@ app.post("/urls", (req, res) => {
     longURL,
     userID: req.session["user_id"]
   };
-  res.redirect(`/urls/${shortURL}`);
+  return res.redirect(`/urls/${shortURL}`);
 });
 
 // redirects the shortURL to longURL
 app.get("/u/:shortURL", (req, res) => {
   const shortURL = req.params.shortURL;
   const longURL = urlDatabase[shortURL].longURL;
-  res.redirect(longURL);
+  return res.redirect(longURL);
 });
 
 //
@@ -80,7 +82,7 @@ app.get("/urls/:shortURL/edit", (req, res) => {
   const shortURL = req.params.shortURL;
   const longURL = urlDatabase[shortURL].longURL;
   const templateVars = { shortURL, longURL, user };
-  res.render(`urls_show`, templateVars);
+  return res.render(`urls_show`, templateVars);
 });
 
 //edit => new url => /edit/redirect
@@ -88,13 +90,13 @@ app.post("/urls/:shortURL", (req, res) => {
   const shortURL = req.params.shortURL;
   const longURL = req.body.longURL;
   urlDatabase[shortURL].longURL = longURL;
-  res.redirect('/urls');
+  return res.redirect('/urls');
 });
 // delets urls
 app.post("/urls/:shortURL/delete", (req, res) => {
   const shortURL = req.params.shortURL;
   delete urlDatabase[shortURL];
-  res.redirect(`/urls`);
+  return res.redirect(`/urls`);
 });
 
 app.get("/login", (req, res) => {
@@ -154,11 +156,11 @@ app.post("/register", (req, res) => {
 //logs out and clears cookies
 app.post("/logout", (req, res) => {
   req.session = null;
-  res.redirect("/login");
+  return res.redirect("/login");
 });
 
 app.get("/urls.json", (req, res) => {// http://localhost:8080/urls.json
-  res.json(urlDatabase);
+  return res.json(urlDatabase);
 });
 // to test server if running
 app.listen(PORT, () => {
