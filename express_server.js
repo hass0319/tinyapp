@@ -26,13 +26,16 @@ app.get("/", (req, res) => {
 //using urls_index page
 app.get("/urls", (req, res) => {
   const userId = req.session['user_id'];
+  let errorMsg = 'Login to view urls';
+  let templateVars = { };
   if (!userId) {
-    // res.status(400).send('Login to view urls');
-    return res.redirect('/login');
+    templateVars = { user: null, errorMsg };
+    return res.render("urls_login", templateVars);
   }
+
   const user = users[userId];
   let userUrls = UrlsForUser(urlDatabase, userId);
-  const templateVars = { urls: userUrls, user };
+  templateVars = { urls: userUrls, user };
   return res.render("urls_index", templateVars);
 });
 
@@ -40,24 +43,31 @@ app.get("/urls", (req, res) => {
 app.get("/urls/new", (req, res) => {
   const userId = req.session['user_id'];
   const user = users[userId];
+  const errorMsg = 'Login to create short-URLs urls';
+  let templateVars = { };
   if (!userId) {
-    res.send('Login to view urls');
-    return res.redirect('/login');
+    templateVars = { user, errorMsg };
+    return res.render("urls_login", templateVars);
   }
-  const templateVars = { user };
+  templateVars = { user };
   return res.render("urls_new", templateVars);
 });
 
 //assigning  shorturls to longurls
 app.get("/urls/:shortURL", (req, res) => {
+  const shortURL = req.params.shortURL;
+  if (!Object.keys(urlDatabase).includes(shortURL)) {
+    return res.status(400).send('URL does not exist');
+  }
   const userId = req.session['user_id'];
   const user = users[userId];
-  const shortURL = req.params.shortURL;
+  console.log('****', shortURL);
   const longURL = urlDatabase[shortURL].longURL;
   const templateVars = { shortURL, longURL, user };
   return res.render("urls_show", templateVars);
 });
-//creating shortUrls
+
+//shows user shortUrls
 app.post("/urls", (req, res) => {
   const longURL = req.body.longURL;
   const shortURL = generateRandomString();
@@ -68,14 +78,20 @@ app.post("/urls", (req, res) => {
   return res.redirect(`/urls/${shortURL}`);
 });
 
-// redirects the shortURL to longURL
+// redirects to the shortURL of longURL
 app.get("/u/:shortURL", (req, res) => {
+  const userId = req.session['user_id'];
   const shortURL = req.params.shortURL;
+  if (!Object.keys(urlDatabase).includes(shortURL)) {
+    return res.status(400).send('URL does not exist');
+  }
+  const ownerofURL = UrlsForUser(urlDatabase, userId);
+  if (!Object.keys(ownerofURL).length) return res.status(400).send('URL not owned');
   const longURL = urlDatabase[shortURL].longURL;
   return res.redirect(longURL);
 });
 
-//
+//redirects to the edit of longURL
 app.get("/urls/:shortURL/edit", (req, res) => {
   const userId = req.session['user_id'];
   const user = users[userId];
@@ -92,6 +108,7 @@ app.post("/urls/:shortURL", (req, res) => {
   urlDatabase[shortURL].longURL = longURL;
   return res.redirect('/urls');
 });
+
 // delets urls
 app.post("/urls/:shortURL/delete", (req, res) => {
   const shortURL = req.params.shortURL;
@@ -99,15 +116,18 @@ app.post("/urls/:shortURL/delete", (req, res) => {
   return res.redirect(`/urls`);
 });
 
+// shows login
 app.get("/login", (req, res) => {
   const user = req.session['user_id'];
-  const templateVars = {user};
+  let errorMsg = null;
+  const templateVars = {user, errorMsg};
   if (!user) {
     return res.render(`urls_login`, templateVars);
   }
   return res.redirect('/urls');
 });
 
+// shows reqistration
 app.get("/register", (req, res) => {
   const user = req.session['user_id'];
   const templateVars = {user};
@@ -117,18 +137,20 @@ app.get("/register", (req, res) => {
   return res.redirect('/urls');
 });
 
-
+// gets user email and password to login
 app.post("/login", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
-  const user = getUserByEmail(email,  urlDatabase);
-  
+  const user = getUserByEmail(email, urlDatabase);
+  let errorMsg = 'Error: Email not registered';
+  let templateVars = { user, errorMsg };
   if (!user) {
-    return res.status(403).send('Error: Email or Password does not match');
+    errorMsg = 'Error: Email or Password does not match';
+    return res.render("urls_login", templateVars);
   }
   const result = bcrypt.compareSync(password, user.password);
   if (!result) {
-    return res.send(`Error: password don't match`);
+    errorMsg = `Error: password doesn't match`;
   }
   req.session['user_id'] = user.id;
   return res.redirect('/urls');
