@@ -20,18 +20,19 @@
     <div class="container" style="margin:0 auto; margin-top: 5rem">
 
       <form class="form-signin" method="POST" action="/login">
-        <!-- login -->
-        <div class="col-sm-10 col-lg-5 mx-auto">
-          <div class="card my-5" style="border-radius: 2rem; box-shadow: 0 0.5rem 1rem 0 rgba(90, 194, 107, 0.445);">
-            <h2 style=" margin-top: .5em">
-              <center>Login</center>
-            </h2>
-            <!-- email address -->
-            <div class="form-label-group" style="margin: .5rem">
-              <input name="email" type="email" class="form-control"style="border-radius: 1rem" aria-describedby="emailHelp"
+          <h3><center><span class="badge badge-danger"><%= errorMsg %></span></center></h3>
+          <!-- login -->
+          <div class="col-sm-10 col-lg-5 mx-auto">
+            <div class="card my-5" style="border-radius: 2rem; box-shadow: 0 0.5rem 1rem 0 rgba(90, 194, 107, 0.445);">
+              <h2 style=" margin-top: .5em">
+                <center>Login</center>
+              </h2>
+              <!-- email address -->
+              <div class="form-label-group" style="margin: .5rem">
+                <input name="email" type="email" class="form-control"style="border-radius: 1rem" aria-describedby="emailHelp"
                 placeholder="Email Address"></input>
-            </div>
-            <!-- password -->
+              </div>
+              <!-- password -->
             <div class="form-label-group" style="margin: .5rem">
               <input type="password" name="password" class="form-control"  style="border-radius: 1rem" placeholder="Password"></input>
               <!-- login button -->
@@ -42,8 +43,8 @@
           </div>
         </div>
       </form>
-
     </div>
+      
 
 
 
