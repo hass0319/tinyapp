@@ -56,14 +56,17 @@ app.get("/urls/new", (req, res) => {
 //assigning  shorturls to longurls
 app.get("/urls/:shortURL", (req, res) => {
   const shortURL = req.params.shortURL;
+  const userId = req.session['user_id'];
+  const user = users[userId];
+  const longURL = urlDatabase[shortURL].longURL;
+  // condition to edit url
+  if (!user) {
+    return res.status(400).send('Loggin to EDIT URL');
+  }
   // checks if shortURL exists in databases
   if (!Object.keys(urlDatabase).includes(shortURL)) {
     return res.status(400).send('URL does not exist');
   }
-  const userId = req.session['user_id'];
-  const user = users[userId];
-  console.log('****', shortURL);
-  const longURL = urlDatabase[shortURL].longURL;
   const templateVars = { shortURL, longURL, user };
   return res.render("urls_show", templateVars);
 });
@@ -81,14 +84,11 @@ app.post("/urls", (req, res) => {
 
 // redirects to the shortURL of longURL
 app.get("/u/:shortURL", (req, res) => {
-  const userId = req.session['user_id'];
   const shortURL = req.params.shortURL;
   // checks if shortURL exists in databases
   if (!Object.keys(urlDatabase).includes(shortURL)) {
     return res.status(400).send('URL does not exist');
   }
-  const ownerofURL = UrlsForUser(urlDatabase, userId);
-  if (!Object.keys(ownerofURL).length) return res.status(400).send('URL not owned');
   const longURL = urlDatabase[shortURL].longURL;
   return res.redirect(longURL);
 });
