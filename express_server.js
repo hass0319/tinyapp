@@ -56,6 +56,7 @@ app.get("/urls/new", (req, res) => {
 //assigning  shorturls to longurls
 app.get("/urls/:shortURL", (req, res) => {
   const shortURL = req.params.shortURL;
+  // checks if shortURL exists in databases
   if (!Object.keys(urlDatabase).includes(shortURL)) {
     return res.status(400).send('URL does not exist');
   }
@@ -82,6 +83,7 @@ app.post("/urls", (req, res) => {
 app.get("/u/:shortURL", (req, res) => {
   const userId = req.session['user_id'];
   const shortURL = req.params.shortURL;
+  // checks if shortURL exists in databases
   if (!Object.keys(urlDatabase).includes(shortURL)) {
     return res.status(400).send('URL does not exist');
   }
@@ -116,7 +118,7 @@ app.post("/urls/:shortURL/delete", (req, res) => {
   return res.redirect(`/urls`);
 });
 
-// shows login
+// renders login page
 app.get("/login", (req, res) => {
   const user = req.session['user_id'];
   let errorMsg = null;
@@ -127,7 +129,7 @@ app.get("/login", (req, res) => {
   return res.redirect('/urls');
 });
 
-// shows reqistration
+// renders reqistration page
 app.get("/register", (req, res) => {
   const user = req.session['user_id'];
   const templateVars = {user};
@@ -148,6 +150,7 @@ app.post("/login", (req, res) => {
     errorMsg = 'Error: Email or Password does not match';
     return res.render("urls_login", templateVars);
   }
+  // compares the string password and hashed password
   const result = bcrypt.compareSync(password, user.password);
   if (!result) {
     errorMsg = `Error: password doesn't match`;
@@ -158,12 +161,14 @@ app.post("/login", (req, res) => {
 
 // adds a new user, hashes password,
 app.post("/register", (req, res) => {
+  // checks to see if password or email are empty
   if (req.body["email"] === '' || req.body["password"] === '') {
     return res.status(400).send("Email or password field is blank");
   }
   const email = req.body["email"];
   const password = req.body["password"];
   const user = getUserByEmail(email,  urlDatabase);
+  // creates salt and hashes for passwords
   const salt = bcrypt.genSaltSync();
   const hashedPassword = bcrypt.hashSync(password, salt);
   if (!user) {
